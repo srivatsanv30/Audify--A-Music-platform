@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Audify - Your premium music streaming experience. Discover, stream, and enjoy music like never before.">
+    <title>Audify - Music for Everyone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ═══ LOGIN PAGE ═══ -->
+    <div class="login-page" id="login-page">
+        <div class="login-split-left">
+            <div class="login-bg"></div>
+            <div class="login-branding">
+                <img src="assets/images/logo.png" alt="Audify" width="80" height="80">
+                <h1>Audify</h1>
+                <p>Your premium music streaming experience. Discover, stream, and enjoy music like never before.</p>
+            </div>
+        </div>
+        <div class="login-split-right">
+            <div class="login-card" id="login-card">
+                <!-- Login Form -->
+                <form class="auth-form" id="login-form" onsubmit="handleLogin(event)">
+                    <h2>Log in to your account</h2>
+                    <div class="form-divider"></div>
+                    <div class="form-group">
+                        <label for="login-email">Email address</label>
+                        <input type="email" id="login-email" placeholder="Email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+                    <div class="form-error" id="login-error"></div>
+                    <button type="submit" class="auth-btn" id="login-submit-btn">Log In</button>
+                    <div class="auth-switch">Don't have an account? <a href="#" onclick="showSignup()">Sign up for Audify</a></div>
+                </form>
+                <!-- Signup Form -->
+                <form class="auth-form hidden" id="signup-form" onsubmit="handleSignup(event)">
+                    <h2>Sign up for Audify</h2>
+                    <div class="form-divider"></div>
+                    <div class="form-group">
+                        <label for="signup-name">What should we call you?</label>
+                        <input type="text" id="signup-name" placeholder="Enter a profile name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email address</label>
+                        <input type="email" id="signup-email" placeholder="Email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Create a password</label>
+                        <input type="password" id="signup-password" placeholder="Create a password" minlength="6" required>
+                    </div>
+                    <div class="form-error" id="signup-error"></div>
+                    <button type="submit" class="auth-btn" id="signup-submit-btn">Sign Up</button>
+                    <div class="auth-switch">Already have an account? <a href="#" onclick="showLogin()">Log in here</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ MAIN APP ═══ -->
+    <div class="app-wrapper hidden" id="app-wrapper">
+        <div class="app-container">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-logo">
+                    <img src="assets/images/logo.png" alt="Audify" width="32" height="32" class="logo-icon">
+                    <span class="logo-text">Audify</span>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-link active" id="nav-home" onclick="showSection('home')">
+                        <i class="fas fa-home"></i><span>Home</span>
+                    </a>
+                    <a href="#" class="nav-link" id="nav-search" onclick="showSection('search')">
+                        <i class="fas fa-search"></i><span>Search</span>
+                    </a>
+                </nav>
+                <div class="library-section">
+                    <div class="library-header">
+                        <div class="library-title"><i class="fas fa-book-open"></i><span>Your Library</span></div>
+                        <div style="display:flex;gap:4px;">
+                            <input type="file" id="local-file-input" accept="audio/*" multiple style="display:none" onchange="handleLocalFiles(event)">
+                            <button class="lib-add-btn" onclick="document.getElementById('local-file-input').click()" title="Play Local Files"><i class="fas fa-folder-open"></i></button>
+                            <button class="lib-add-btn" id="lib-add-btn" onclick="openCreatePlaylistModal()" title="Create playlist"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="library-tabs">
+                        <button class="lib-tab active" onclick="filterLibrary('all',this)">All</button>
+                        <button class="lib-tab" onclick="filterLibrary('playlists',this)">Playlists</button>
+                        <button class="lib-tab" onclick="filterLibrary('history',this)">History</button>
+                    </div>
+                    <div class="playlist-list" id="playlist-list"></div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content" id="main-content">
+                <header class="top-bar" id="top-bar">
+                    <div class="nav-arrows">
+                        <button class="nav-btn" id="btn-back" onclick="goBack()"><i class="fas fa-chevron-left"></i></button>
+                        <button class="nav-btn" id="btn-forward" onclick="goForward()"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="top-bar-right">
+                        <!-- Theme Toggle -->
+                        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Switch theme">
+                            <i class="fas fa-sun" id="theme-icon"></i>
+                        </button>
+                        <div class="user-menu-wrap">
+                            <button class="user-btn" id="user-btn" onclick="toggleUserMenu()">
+                                <div class="user-avatar" id="user-avatar">U</div>
+                                <span id="user-display-name">User</span>
+                                <i class="fas fa-caret-down"></i>
+                            </button>
+                            <div class="user-dropdown" id="user-dropdown">
+                                <a href="#" onclick="showSection('history');toggleUserMenu()"><i class="fas fa-clock-rotate-left"></i> Listening History</a>
+                                <a href="#" onclick="openCreatePlaylistModal();toggleUserMenu()"><i class="fas fa-plus"></i> Create Playlist</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" onclick="handleLogout()"><i class="fas fa-right-from-bracket"></i> Log Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Home -->
+                <section class="content-section active" id="section-home">
+                    <div class="hero-banner"><div class="hero-content">
+                        <h1 id="greeting-text">Good Evening</h1>
+                        <div class="quick-picks" id="quick-picks"></div>
+                    </div></div>
+                    <div class="content-rows">
+                        <div class="content-row" id="row-recent"></div>
+                        <div class="content-row" id="row-trending"></div>
+                        <div class="content-row" id="row-all"></div>
+                    </div>
+                </section>
+
+                <!-- Search -->
+                <section class="content-section" id="section-search">
+                    <div class="search-container">
+                        <div class="search-input-wrap">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="What do you want to listen to?" oninput="handleSearch(this.value)">
+                        </div>
+                        <div id="search-results" class="search-results"></div>
+                        <div id="browse-categories" class="browse-categories">
+                            <h2>Browse All</h2>
+                            <div class="category-grid" id="category-grid"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Playlist View -->
+                <section class="content-section" id="section-playlist">
+                    <div class="playlist-hero" id="playlist-hero"></div>
+                    <div class="playlist-controls" id="playlist-controls">
+                        <button class="play-btn-large" id="playlist-play-btn" onclick="playPlaylist()"><i class="fas fa-play"></i></button>
+                        <button class="shuffle-btn" id="playlist-shuffle-btn" onclick="toggleShuffle()"><i class="fas fa-shuffle"></i></button>
+                        <div class="playlist-actions">
+                            <button class="ctrl-btn" id="add-songs-btn" onclick="openAddSongsModal()" title="Add songs" style="display:none"><i class="fas fa-plus-circle"></i></button>
+                            <button class="ctrl-btn" id="delete-playlist-btn" onclick="deleteCurrentPlaylist()" title="Delete playlist" style="display:none"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="playlist-tracks" id="playlist-tracks">
+                        <div class="tracks-header">
+                            <span class="track-num">#</span>
+                            <span class="track-title-head">Title</span>
+                            <span class="track-artist-head">Artist</span>
+                            <span class="track-duration-head"><i class="fas fa-clock"></i></span>
+                        </div>
+                        <div id="tracks-list"></div>
+                    </div>
+                </section>
+
+                <!-- History View -->
+                <section class="content-section" id="section-history">
+                    <div class="history-page">
+                        <div class="history-header">
+                            <h1><i class="fas fa-clock-rotate-left"></i> Listening History</h1>
+                            <button class="clear-history-btn" onclick="clearHistory()">Clear All</button>
+                        </div>
+                        <div id="history-list" class="history-list"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Now Playing Bar -->
+        <footer class="now-playing-bar" id="now-playing-bar">
+            <div class="now-playing-left">
+                <div class="now-playing-img" id="np-img" onclick="openFullscreenPlayer()"></div>
+                <div class="now-playing-info">
+                    <div class="np-title" id="np-title">No song playing</div>
+                    <div class="np-artist" id="np-artist">—</div>
+                </div>
+                <button class="like-btn" id="like-btn" onclick="toggleLike()"><i class="far fa-heart"></i></button>
+            </div>
+            <div class="now-playing-center">
+                <div class="player-controls">
+                    <button class="ctrl-btn" id="shuffle-btn" onclick="toggleShuffle()"><i class="fas fa-shuffle"></i></button>
+                    <button class="ctrl-btn" id="prev-btn" onclick="playPrev()"><i class="fas fa-backward-step"></i></button>
+                    <button class="play-pause-btn" id="play-pause-btn" onclick="togglePlay()"><i class="fas fa-play"></i></button>
+                    <button class="ctrl-btn" id="next-btn" onclick="playNext()"><i class="fas fa-forward-step"></i></button>
+                    <button class="ctrl-btn" id="repeat-btn" onclick="toggleRepeat()"><i class="fas fa-repeat"></i></button>
+                </div>
+                <div class="progress-container">
+                    <span class="time-current" id="time-current">0:00</span>
+                    <div class="progress-bar" id="progress-bar">
+                        <div class="progress-filled" id="progress-filled"></div>
+                        <div class="progress-thumb" id="progress-thumb"></div>
+                    </div>
+                    <span class="time-total" id="time-total">0:00</span>
+                </div>
+            </div>
+            <div class="now-playing-right">
+                <button class="ctrl-btn" id="queue-btn" onclick="toggleQueue()"><i class="fas fa-bars-staggered"></i></button>
+                <button class="fullscreen-btn" id="fullscreen-btn" onclick="openFullscreenPlayer()" title="Full screen player">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <div class="volume-container">
+                    <button class="ctrl-btn" id="volume-btn" onclick="toggleMute()"><i class="fas fa-volume-high"></i></button>
+                    <div class="volume-bar" id="volume-bar">
+                        <div class="volume-filled" id="volume-filled" style="width:70%"></div>
+                        <div class="volume-thumb" id="volume-thumb" style="left:70%"></div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+
+        <!-- Queue Panel -->
+        <div class="queue-panel" id="queue-panel">
+            <div class="queue-header"><h3>Queue</h3><button class="close-queue" onclick="toggleQueue()"><i class="fas fa-xmark"></i></button></div>
+            <div class="queue-now"><h4>Now Playing</h4><div id="queue-current"></div></div>
+            <div class="queue-next"><h4>Next Up</h4><div id="queue-list"></div></div>
+        </div>
+
+        <!-- Context Menu (Add to Playlist) -->
+        <div class="context-menu hidden" id="context-menu">
+            <div class="ctx-header">Add to playlist</div>
+            <div class="ctx-items" id="ctx-items"></div>
+        </div>
+    </div>
+
+    <!-- ═══ FULLSCREEN PLAYER ═══ -->
+    <div class="fullscreen-player" id="fullscreen-player">
+        <div class="fs-header">
+            <div class="fs-label">PLAYING FROM <span id="fs-playlist-name">Library</span></div>
+            <div class="fs-header-actions">
+                <button class="fs-action-btn" onclick="closeFullscreenPlayer()" title="Close full screen"><i class="fas fa-compress"></i></button>
+            </div>
+        </div>
+        <div class="fs-body">
+            <div class="fs-artwork-container">
+                <div class="fs-artwork" id="fs-artwork">
+                    <div class="fs-artwork-inner" id="fs-artwork-inner">
+                        <i class="fas fa-music"></i>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+
+    <!-- ═══ MODALS ═══ -->
+    <div class="modal-overlay hidden" id="modal-overlay" onclick="closeAllModals()"></div>
+
+    <!-- Create Playlist Modal -->
+    <div class="modal hidden" id="create-playlist-modal">
+        <div class="modal-header"><h3>Create Playlist</h3><button onclick="closeAllModals()"><i class="fas fa-xmark"></i></button></div>
+        <form onsubmit="handleCreatePlaylist(event)">
+            <div class="form-group"><label>Playlist Name</label><input type="text" id="new-playlist-name" placeholder="My Playlist" required></div>
+            <div class="form-group"><label>Description</label><input type="text" id="new-playlist-desc" placeholder="Add an optional description"></div>
+            <button type="submit" class="auth-btn" style="margin-top:8px">Create</button>
+        </form>
+    </div>
+
+    <!-- Add Songs Modal -->
+    <div class="modal hidden" id="add-songs-modal">
+        <div class="modal-header"><h3>Add Songs</h3><button onclick="closeAllModals()"><i class="fas fa-xmark"></i></button></div>
+        <div class="modal-search"><input type="text" id="add-songs-search" placeholder="Search for songs..." oninput="filterAddSongs(this.value)"></div>
+        <div class="add-songs-list" id="add-songs-list"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <audio id="audio-player" preload="auto"></audio>
+    <script src="auth.js"></script>
+    <script src="data.js"></script>
+    <script src="player.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
