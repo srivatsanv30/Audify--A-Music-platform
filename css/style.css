@@ -172,18 +172,18 @@ input{font-family:inherit}
 .login-glass-card .form-divider{display:none}
 
 /* ── Input with Icon ── */
-.input-icon-wrap{position:relative;display:flex;align-items:center}
-.input-icon-wrap > i{position:absolute;left:18px;color:rgba(255,255,255,0.25);font-size:0.9rem;transition:color 0.25s;z-index:1;pointer-events:none}
-.input-icon-wrap input{width:100%;padding:16px 50px 16px 48px;border-radius:14px;border:1.5px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:0.95rem;outline:none;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+.input-icon-wrap{position:relative;display:flex;align-items:center;width:100%}
+.input-icon-wrap > i{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;text-align:center;color:rgba(255,255,255,0.4);font-size:0.95rem;transition:color 0.25s;z-index:2;pointer-events:none}
+.form-group .input-icon-wrap input,
+.input-icon-wrap input{width:100%;padding:15px 48px 15px 48px;border-radius:14px;border:1.5px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:0.95rem;outline:none;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);line-height:1.4}
+.form-group .input-icon-wrap input:focus,
 .input-icon-wrap input:focus{border-color:rgba(108,92,231,0.6);background:rgba(108,92,231,0.08);box-shadow:0 0 0 4px rgba(108,92,231,0.15), 0 4px 16px rgba(0,0,0,0.2)}
-.input-icon-wrap input:focus + .password-toggle,
-.input-icon-wrap input:focus ~ .password-toggle{color:rgba(255,255,255,0.5)}
 .input-icon-wrap:focus-within > i{color:var(--accent)}
 .input-icon-wrap input::placeholder{color:rgba(255,255,255,0.2)}
 
 /* ── Password Toggle ── */
-.password-toggle{position:absolute;right:14px;background:none;border:none;color:rgba(255,255,255,0.2);font-size:0.88rem;cursor:pointer;padding:6px;transition:color 0.25s;z-index:1}
-.password-toggle:hover{color:rgba(255,255,255,0.6)}
+.password-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.35);font-size:0.95rem;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all 0.2s ease;z-index:2}
+.password-toggle:hover{color:var(--accent);background:rgba(108,92,231,0.1)}
 
 /* ── Auth Button Enhanced ── */
 .login-glass-card .auth-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#6c5ce7 0%,#8b5cf6 50%,#a78bfa 100%);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.3s;border:none;box-shadow:0 8px 32px rgba(108,92,231,0.35);position:relative;overflow:hidden;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:0.3px}
@@ -221,12 +221,14 @@ input{font-family:inherit}
 [data-theme="light"] .login-tagline{color:rgba(26,16,53,0.45)}
 [data-theme="light"] .login-glass-card .auth-form h2{color:#1a1035}
 [data-theme="light"] .auth-subtitle{color:rgba(26,16,53,0.45)}
-[data-theme="light"] .input-icon-wrap > i{color:rgba(26,16,53,0.3)}
-[data-theme="light"] .input-icon-wrap input{border-color:rgba(108,92,231,0.12);background:rgba(108,92,231,0.04);color:#1a1035}
-[data-theme="light"] .input-icon-wrap input:focus{border-color:rgba(108,92,231,0.5);background:rgba(108,92,231,0.06);box-shadow:0 0 0 4px rgba(108,92,231,0.1)}
-[data-theme="light"] .input-icon-wrap input::placeholder{color:rgba(26,16,53,0.25)}
-[data-theme="light"] .password-toggle{color:rgba(26,16,53,0.25)}
-[data-theme="light"] .password-toggle:hover{color:rgba(26,16,53,0.5)}
+[data-theme="light"] .input-icon-wrap > i{color:rgba(26,16,53,0.45)}
+[data-theme="light"] .form-group .input-icon-wrap input,
+[data-theme="light"] .input-icon-wrap input{border-color:rgba(108,92,231,0.14);background:rgba(108,92,231,0.04);color:#1a1035}
+[data-theme="light"] .form-group .input-icon-wrap input:focus,
+[data-theme="light"] .input-icon-wrap input:focus{border-color:rgba(108,92,231,0.6);background:#ffffff;box-shadow:0 0 0 4px rgba(108,92,231,0.12), 0 4px 16px rgba(108,92,231,0.06)}
+[data-theme="light"] .input-icon-wrap input::placeholder{color:rgba(26,16,53,0.35)}
+[data-theme="light"] .password-toggle{color:rgba(26,16,53,0.45)}
+[data-theme="light"] .password-toggle:hover{color:var(--accent);background:rgba(108,92,231,0.08)}
 [data-theme="light"] .auth-divider-line{color:rgba(26,16,53,0.15)}
 [data-theme="light"] .auth-divider-line::before,[data-theme="light"] .auth-divider-line::after{background:linear-gradient(90deg,transparent,rgba(26,16,53,0.08),transparent)}
 [data-theme="light"] .login-glass-card .auth-switch{color:rgba(26,16,53,0.45)}
@@ -237,9 +239,9 @@ input{font-family:inherit}
 /* ── General Form & Auth Styles (for modals & non-login forms) ── */
 .form-group{margin-bottom:24px}
 .form-group label{display:block;font-size:0.85rem;font-weight:600;margin-bottom:10px;color:var(--text-secondary);letter-spacing:0.3px}
-.form-group input{width:100%;padding:16px 20px;border-radius:16px;border:1.5px solid var(--input-border);background:var(--input-bg);color:var(--text-primary);font-size:1rem;outline:none;transition:all var(--transition);box-shadow:0 2px 6px rgba(0,0,0,0.02)}
-.form-group input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-glow), 0 4px 12px rgba(0,0,0,0.05);background:var(--bg-elevated);transform:translateY(-1px)}
-.form-group input::placeholder{color:var(--text-subdued)}
+.form-group > input{width:100%;padding:16px 20px;border-radius:16px;border:1.5px solid var(--input-border);background:var(--input-bg);color:var(--text-primary);font-size:1rem;outline:none;transition:all var(--transition);box-shadow:0 2px 6px rgba(0,0,0,0.02)}
+.form-group > input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-glow), 0 4px 12px rgba(0,0,0,0.05);background:var(--bg-elevated);transform:translateY(-1px)}
+.form-group > input::placeholder{color:var(--text-subdued)}
 .form-error{color:#ef4444;font-size:0.85rem;margin-bottom:16px;min-height:20px;font-weight:500;display:flex;align-items:center;gap:6px}
 .auth-btn{width:100%;padding:16px;border-radius:16px;background:linear-gradient(135deg,var(--accent) 0%,#8b5cf6 100%);color:#fff;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all var(--transition);border:none;box-shadow:0 8px 24px rgba(108,92,231,0.35);position:relative;overflow:hidden;margin-top:8px}
 .auth-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,0.25));opacity:0;transition:opacity var(--transition)}
