@@ -296,22 +296,138 @@
 
     <!-- ═══ FULLSCREEN PLAYER ═══ -->
     <div class="fullscreen-player" id="fullscreen-player">
-        <div class="fs-header">
-            <div class="fs-label">PLAYING FROM <span id="fs-playlist-name">Library</span></div>
-            <div class="fs-header-actions">
-                <button class="fs-action-btn" onclick="closeFullscreenPlayer()" title="Close full screen"><i class="fas fa-compress"></i></button>
+        <!-- Ambient Backdrop -->
+        <div class="fs-bg-glow-layer" id="fs-bg-glow"></div>
+        <div class="fs-backdrop-blur"></div>
+
+        <!-- Header -->
+        <header class="fs-top-bar">
+            <button class="fs-round-btn fs-close-btn" onclick="closeFullscreenPlayer()" title="Collapse (Esc)">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="fs-source-badge">
+                <span class="fs-source-sub">PLAYING FROM</span>
+                <span class="fs-source-title" id="fs-playlist-name">Library</span>
             </div>
-        </div>
-        <div class="fs-body">
-            <div class="fs-artwork-container">
-                <div class="fs-artwork" id="fs-artwork">
-                    <div class="fs-artwork-inner" id="fs-artwork-inner">
-                        <i class="fas fa-music"></i>
+            <div class="fs-top-actions">
+                <button class="fs-round-btn" id="fs-queue-toggle" onclick="toggleFSQueue()" title="Queue">
+                    <i class="fas fa-list-ul"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Showcase Area -->
+        <div class="fs-content-layout">
+            <!-- Left / Hero: Artwork & Visualizer -->
+            <div class="fs-artwork-column">
+                <div class="fs-artwork-wrapper">
+                    <div class="fs-artwork-ambient" id="fs-artwork-ambient"></div>
+                    <div class="fs-artwork-frame" id="fs-artwork-frame">
+                        <div class="fs-artwork-inner" id="fs-artwork-inner">
+                            <i class="fas fa-music"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Animated Soundwave Equalizer -->
+                <div class="fs-soundwave" id="fs-soundwave">
+                    <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
+                    <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
+                    <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
+                    <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
+                </div>
+            </div>
+
+            <!-- Right / Player Controls & Info -->
+            <div class="fs-controls-column">
+                <!-- Song Metadata -->
+                <div class="fs-meta-block">
+                    <div class="fs-badges-row">
+                        <span class="fs-genre-tag" id="fs-genre-tag">Tamil</span>
+                        <span class="fs-quality-tag"><i class="fas fa-bolt"></i> Hi-Res Lossless</span>
+                    </div>
+                    <div class="fs-title-row">
+                        <div class="fs-title-text-wrap">
+                            <h1 class="fs-song-title" id="fs-song-title">No song playing</h1>
+                            <div class="fs-song-subtitle">
+                                <span class="fs-song-artist" id="fs-song-artist">—</span>
+                                <span class="fs-sep-dot">•</span>
+                                <span class="fs-song-album" id="fs-song-album">—</span>
+                            </div>
+                        </div>
+                        <button class="fs-heart-btn" id="fs-like-btn" onclick="toggleLike()" title="Save to Liked Songs">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Progress Scrubber -->
+                <div class="fs-timeline-block">
+                    <div class="fs-progress-track" id="fs-progress-bar" onclick="seekToFS(event)">
+                        <div class="fs-progress-hover-line"></div>
+                        <div class="fs-progress-fill" id="fs-progress-fill"></div>
+                        <div class="fs-progress-knob" id="fs-progress-knob"></div>
+                    </div>
+                    <div class="fs-time-stamps">
+                        <span id="fs-time-current">0:00</span>
+                        <span id="fs-time-total">0:00</span>
+                    </div>
+                </div>
+
+                <!-- Main Playback Controls -->
+                <div class="fs-playback-controls">
+                    <button class="fs-control-btn" id="fs-shuffle-btn" onclick="toggleShuffle()" title="Shuffle">
+                        <i class="fas fa-shuffle"></i>
+                    </button>
+                    <button class="fs-control-btn fs-step-btn" id="fs-prev-btn" onclick="playPrev()" title="Previous (Left Arrow)">
+                        <i class="fas fa-backward-step"></i>
+                    </button>
+                    <button class="fs-hero-play-btn" id="fs-play-btn" onclick="togglePlay()" title="Play / Pause (Space)">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="fs-control-btn fs-step-btn" id="fs-next-btn" onclick="playNext()" title="Next (Right Arrow)">
+                        <i class="fas fa-forward-step"></i>
+                    </button>
+                    <button class="fs-control-btn" id="fs-repeat-btn" onclick="toggleRepeat()" title="Repeat">
+                        <i class="fas fa-repeat"></i>
+                    </button>
+                </div>
+
+                <!-- Auxiliary Bar: Volume & Up Next Card -->
+                <div class="fs-aux-row">
+                    <div class="fs-volume-box">
+                        <button class="fs-aux-icon-btn" id="fs-vol-btn" onclick="toggleMute()" title="Mute / Unmute">
+                            <i class="fas fa-volume-high"></i>
+                        </button>
+                        <div class="fs-volume-slider" id="fs-volume-bar" onclick="setVolumeFS(event)">
+                            <div class="fs-volume-slider-fill" id="fs-volume-fill" style="width:70%"></div>
+                            <div class="fs-volume-slider-thumb" id="fs-volume-thumb" style="left:70%"></div>
+                        </div>
+                    </div>
+                    <div class="fs-next-card" id="fs-next-card" onclick="playNext()" title="Play next song">
+                        <div class="fs-next-thumb" id="fs-next-thumb"><i class="fas fa-forward"></i></div>
+                        <div class="fs-next-info">
+                            <span class="fs-next-label">UP NEXT</span>
+                            <span class="fs-next-title" id="fs-next-title">—</span>
+                        </div>
+                        <i class="fas fa-chevron-right fs-next-arrow"></i>
                     </div>
                 </div>
             </div>
-            
-            
+        </div>
+
+        <!-- Fullscreen Slide-in Queue Overlay -->
+        <div class="fs-queue-panel" id="fs-queue-panel">
+            <div class="fs-queue-panel-header">
+                <div class="fs-queue-title">
+                    <i class="fas fa-bars-staggered"></i>
+                    <span>Up Next in Queue</span>
+                </div>
+                <button class="fs-round-btn" onclick="toggleFSQueue()" title="Close Queue">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+            <div class="fs-queue-panel-list" id="fs-queue-list"></div>
         </div>
     </div>
 
